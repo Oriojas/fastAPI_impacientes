@@ -1,6 +1,7 @@
 import uvicorn
 import pandas as pd
 from fastapi import FastAPI
+import data_description as dd
 from pydantic import BaseModel
 from typing import List, Union
 from fastapi.responses import JSONResponse
@@ -14,12 +15,11 @@ class dataFrame(BaseModel):
     cylinders: int
     displacement: float
     horsepower: float
-    weight: float
+    weight: int
     acceleration: float
-    model: float
-    year: int
+    modelYear: int
     origin: int
-    car_name: str
+    carName: str
 
 
 @app.get("/hello/")
@@ -47,12 +47,16 @@ async def sum_num(num1: float, num2: float):
 
 
 @app.post("/describe/")
-async def describe(data_frame_j: Union[List[dataFrame]]):
-    json_data_input = jsonable_encoder(data_frame_j)
+async def describe(json_input: Union[List[dataFrame]]):
 
-    json_output = jsonable_encoder(json_data_input)
+    json_data_input = jsonable_encoder(json_input)
+    df_resp = pd.DataFrame(json_data_input)
 
-    return json_output
+    des_dict = dd.dataDescription(df=df_resp).fit()
+
+    json_output = jsonable_encoder(str(des_dict))
+
+    return JSONResponse(content=json_output)
 
 
 if __name__ == '__main__':
