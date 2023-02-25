@@ -40,14 +40,25 @@ async def hello_you(name: str):
 
 @app.get("/sum_num/")
 async def sum_num(num1: float, num2: float):
+    """
+    this function sum two numbers
+    :param num1: float, first number to sum
+    :param num2: float, second number to sum
+    :return: float, result of sum
+    """
     result = num1 + num2
-    string_result = f"La suma de los dos numéros es: {result}"
+    string_result = f"La suma de los dos numeros es: {result}"
 
     return string_result
 
 
 @app.post("/describe/")
 async def describe(json_input: Union[List[dataFrame]]):
+    """
+    this function return a mpg_car dataframe to describe
+    :param json_input: json, input data
+    :return: json, resume data from json_input
+    """
 
     json_data_input = jsonable_encoder(json_input)
     df_resp = pd.DataFrame(json_data_input)

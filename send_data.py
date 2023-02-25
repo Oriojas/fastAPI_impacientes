@@ -6,10 +6,19 @@ import pandas as pd
 class sendData:
 
     def __init__(self, df, url):
+        """
+        constructor
+        :param df: dataframe, to send endpoint
+        :param url: str, url service endpoint
+        """
         self.url = url
         self.df = df
 
     def send(self):
+        """
+        this method sends data to the endpoint
+        :return:
+        """
 
         df = self.df.dropna()
         data = df.to_dict(orient="records")
